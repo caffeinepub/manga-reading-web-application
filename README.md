@@ -1,2 +1,3 @@
-# manga-reading-web-application
-Exported from Caffeine project: Manga Reading Web Application
+## Manga Reading Web Application
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

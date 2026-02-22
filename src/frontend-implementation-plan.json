@@ -1,0 +1,352 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Manga Reader Platform - Frontend Implementation",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement Internet Identity authentication with passkey-based login for protected features access",
+      "acceptanceCriteria": [
+        "Users can authenticate using Internet Identity",
+        "Unauthenticated users cannot access manga reading features",
+        "Authentication state persists across page refreshes",
+        "Logout functionality clears authentication state"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create authentication button component using the authorization component. This component handles login/logout flow with Internet Identity, displays current authentication state, and clears cached data on logout. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/UserProfileSetup.tsx",
+          "operation": "create",
+          "description": "Create user profile setup modal that appears for first-time users. Uses authorization component's getCallerUserProfile and saveCallerUserProfile methods to check and store username/email. Implements proper loading state handling to prevent modal flash. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useGetCallerUserProfile.ts",
+          "operation": "create",
+          "description": "Create custom hook using authorization component to fetch current user profile with proper actor dependency handling and loading states to prevent profile setup modal flash. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useSaveCallerUserProfile.ts",
+          "operation": "create",
+          "description": "Create custom hook using authorization component to save user profile data with mutation support. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Create responsive home page with manga grid, cover images, and Read Now navigation",
+      "acceptanceCriteria": [
+        "Grid layout is responsive (adjusts columns based on screen size)",
+        "Cover images load properly",
+        "Read Now button navigates to correct manga details page",
+        "Long descriptions are truncated with ellipsis"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "create",
+          "description": "Create home page displaying manga grid with responsive layout. Fetches manga list from getMangaList backend method, displays cover images using ExternalBlob.getDirectURL(), and includes Read Now buttons that navigate to manga details. Integrates search (REQ-12) and pagination (REQ-13) components. Uses placeholder cover image frontend/public/assets/generated/manga-cover-placeholder.dim_400x600.png for any missing covers."
+        },
+        {
+          "path": "frontend/src/components/MangaCard.tsx",
+          "operation": "create",
+          "description": "Create manga card component displaying cover image (via ExternalBlob.getDirectURL()), title, truncated description with ellipsis, and Read Now button. Implements hover animations per theme requirements. Falls back to frontend/public/assets/generated/manga-cover-placeholder.dim_400x600.png if cover unavailable."
+        },
+        {
+          "path": "frontend/src/hooks/useGetMangaList.ts",
+          "operation": "create",
+          "description": "Create custom hook to fetch paginated manga list from getMangaList backend method with caching via React Query."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Create manga details page with chapter list and reader navigation",
+      "acceptanceCriteria": [
+        "All chapter information is displayed clearly",
+        "Chapters are listed in order by chapter number",
+        "Clicking a chapter opens the reader for that specific chapter",
+        "Page shows bookmark and reading history status"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/MangaDetailsPage.tsx",
+          "operation": "create",
+          "description": "Create manga details page displaying manga title, cover image via ExternalBlob.getDirectURL(), full description, and ordered chapter list. Includes bookmark toggle button and displays reading history status. Chapter list items navigate to reader page with manga ID and chapter number. Fetches data from getMangaById backend method. Requires authentication per REQ-17."
+        },
+        {
+          "path": "frontend/src/components/ChapterList.tsx",
+          "operation": "create",
+          "description": "Create chapter list component displaying chapters ordered by chapter number with titles. Each item is clickable and navigates to the reader page with the corresponding chapter."
+        },
+        {
+          "path": "frontend/src/hooks/useGetMangaById.ts",
+          "operation": "create",
+          "description": "Create custom hook to fetch manga details by ID from getMangaById backend method with React Query caching."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Create manga reader page with vertical scroll, chapter navigation, and progress tracking",
+      "acceptanceCriteria": [
+        "Images load sequentially in vertical scroll",
+        "Reader is fully responsive on mobile and desktop",
+        "Navigation buttons allow moving to previous/next chapter",
+        "Current chapter information is clearly displayed",
+        "Reading progress is automatically recorded to history"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ReaderPage.tsx",
+          "operation": "create",
+          "description": "Create reader page with vertical scroll layout for chapter images using ExternalBlob.getDirectURL(). Displays current chapter number and title, provides previous/next chapter navigation, includes back button to manga details, and automatically records reading progress via recordReadingHistory backend method. Requires authentication per REQ-17."
+        },
+        {
+          "path": "frontend/src/hooks/useRecordReadingHistory.ts",
+          "operation": "create",
+          "description": "Create custom hook to record reading history via recordReadingHistory backend method with mutation support."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement dark mode toggle with localStorage persistence and #0f0f0f default",
+      "acceptanceCriteria": [
+        "Toggle button is accessible from all pages",
+        "Theme preference persists across sessions",
+        "Dark mode uses #0f0f0f background",
+        "All text remains readable in both modes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ThemeToggle.tsx",
+          "operation": "create",
+          "description": "Create theme toggle button component that switches between light and dark modes, persisting preference in localStorage. Accessible from all pages via layout component."
+        },
+        {
+          "path": "frontend/src/hooks/useTheme.ts",
+          "operation": "create",
+          "description": "Create custom hook managing theme state with localStorage persistence. Sets dark mode as default with #0f0f0f background and applies theme class to document root."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add dark mode CSS variables and styles with #0f0f0f background for dark mode, purple/red accent colors, and ensure text readability in both modes. Define theme-specific color variables for consistent styling."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Configure Tailwind for dark mode with class strategy and define custom colors for dark background (#0f0f0f) and purple/red accents."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Create admin panel with forms for manga and chapter management",
+      "acceptanceCriteria": [
+        "Admin panel is only accessible to users with admin role",
+        "Forms validate required fields before submission",
+        "Successfully added manga/chapters appear immediately in the library",
+        "Non-admin users are redirected if they attempt to access admin routes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "create",
+          "description": "Create admin panel page with forms to add manga (title, description, cover image URL via ExternalBlob.fromURL) and add chapters (select manga, chapter number, title, image URLs via ExternalBlob.fromURL). Calls addManga and addChapter backend methods. Uses authorization component to verify admin role and displays AccessDeniedScreen for non-admin users. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AddMangaForm.tsx",
+          "operation": "create",
+          "description": "Create form component for adding new manga with fields for title, description, and cover image URL. Validates required fields and calls addManga backend method via custom hook. Uses blob-storage component's ExternalBlob.fromURL for image handling. Verify the blob-storage component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AddChapterForm.tsx",
+          "operation": "create",
+          "description": "Create form component for adding chapters to existing manga. Includes manga selector, chapter number, title, and image URLs array input. Validates required fields and calls addChapter backend method via custom hook. Uses blob-storage component's ExternalBlob.fromURL for image handling. Verify the blob-storage component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AccessDeniedScreen.tsx",
+          "operation": "create",
+          "description": "Create access denied component shown to non-admin users attempting to access admin routes. Uses authorization component to check user role. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAddManga.ts",
+          "operation": "create",
+          "description": "Create custom hook to add manga via addManga backend method with mutation support and cache invalidation."
+        },
+        {
+          "path": "frontend/src/hooks/useAddChapter.ts",
+          "operation": "create",
+          "description": "Create custom hook to add chapter via addChapter backend method with mutation support and cache invalidation."
+        },
+        {
+          "path": "frontend/src/hooks/useIsCallerAdmin.ts",
+          "operation": "create",
+          "description": "Create custom hook to check if current user is admin via isCallerAdmin backend method. Uses authorization component. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Implement real-time search filtering by title or description",
+      "acceptanceCriteria": [
+        "Search input is prominently placed on home page",
+        "Results update as user types (debounced)",
+        "Search matches both title and description text",
+        "Clear search button resets to show all manga"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/SearchBar.tsx",
+          "operation": "create",
+          "description": "Create search input component with debounced input handling. Calls searchManga backend method and updates displayed manga list in real-time. Includes clear button to reset search."
+        },
+        {
+          "path": "frontend/src/hooks/useSearchManga.ts",
+          "operation": "create",
+          "description": "Create custom hook to search manga via searchManga backend method with debouncing and React Query caching."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Implement pagination controls with configurable page size and URL state",
+      "acceptanceCriteria": [
+        "Pagination controls are intuitive and accessible",
+        "Page state is reflected in URL query parameters",
+        "Users can navigate between pages smoothly",
+        "Page size is configurable"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Pagination.tsx",
+          "operation": "create",
+          "description": "Create pagination component with page numbers, previous/next buttons, and current page indicator. Default page size is 12. Updates URL query parameters for page state. Integrates with getMangaList backend method pagination."
+        },
+        {
+          "path": "frontend/src/hooks/usePagination.ts",
+          "operation": "create",
+          "description": "Create custom hook managing pagination state with URL query parameter synchronization and configurable page size."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add bookmark functionality with toggle button and bookmarks page",
+      "acceptanceCriteria": [
+        "Bookmark button shows current bookmark state",
+        "Clicking bookmark button adds/removes bookmark",
+        "Bookmarks page displays all bookmarked manga",
+        "Bookmark state persists across sessions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/BookmarkButton.tsx",
+          "operation": "create",
+          "description": "Create bookmark toggle button component displaying current bookmark state and calling addBookmark/removeBookmark backend methods. Uses frontend/public/assets/generated/bookmark-icon.dim_64x64.png for icon. Requires authentication."
+        },
+        {
+          "path": "frontend/src/pages/BookmarksPage.tsx",
+          "operation": "create",
+          "description": "Create bookmarks page displaying all bookmarked manga from getBookmarks backend method in grid layout. Reuses MangaCard component. Requires authentication per REQ-17."
+        },
+        {
+          "path": "frontend/src/hooks/useGetBookmarks.ts",
+          "operation": "create",
+          "description": "Create custom hook to fetch bookmarked manga via getBookmarks backend method with React Query caching."
+        },
+        {
+          "path": "frontend/src/hooks/useAddBookmark.ts",
+          "operation": "create",
+          "description": "Create custom hook to add bookmark via addBookmark backend method with mutation support and cache invalidation."
+        },
+        {
+          "path": "frontend/src/hooks/useRemoveBookmark.ts",
+          "operation": "create",
+          "description": "Create custom hook to remove bookmark via removeBookmark backend method with mutation support and cache invalidation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Create reading history page with continue reading links",
+      "acceptanceCriteria": [
+        "History page shows manga title, cover, and last read chapter",
+        "List is sorted by most recently read",
+        "Continue reading button navigates to last accessed chapter",
+        "History updates automatically when user reads chapters"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/HistoryPage.tsx",
+          "operation": "create",
+          "description": "Create reading history page displaying manga with last read chapter from getReadingHistory backend method. Sorted by most recent, with continue reading buttons navigating to last accessed chapter. Uses frontend/public/assets/generated/history-icon.dim_64x64.png for page icon. Requires authentication per REQ-17."
+        },
+        {
+          "path": "frontend/src/components/HistoryCard.tsx",
+          "operation": "create",
+          "description": "Create history card component displaying manga cover via ExternalBlob.getDirectURL(), title, last read chapter number, and continue reading button navigating to reader page."
+        },
+        {
+          "path": "frontend/src/hooks/useGetReadingHistory.ts",
+          "operation": "create",
+          "description": "Create custom hook to fetch reading history via getReadingHistory backend method with React Query caching."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Apply modern anime-inspired theme with dark background, accents, animations, and mobile responsiveness",
+      "acceptanceCriteria": [
+        "Color scheme uses #0f0f0f background with purple or red accents",
+        "Hover effects and transitions are smooth and subtle",
+        "All pages are fully responsive on mobile devices",
+        "Typography and spacing follow modern design principles"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "create",
+          "description": "Create layout component wrapping all pages with navigation header, theme toggle, login button, and consistent spacing. Applies anime-inspired design with dark background and accent colors. Includes navigation links to home, bookmarks, history, and admin (if admin user)."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Extend with anime-inspired theme styles including smooth hover transitions, purple/red accent colors, modern typography (consider anime-friendly fonts), and mobile-responsive spacing utilities."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Implement protected routes with authentication redirects",
+      "acceptanceCriteria": [
+        "Unauthenticated users cannot access protected pages",
+        "Users are redirected to appropriate login flow",
+        "After authentication, users are redirected to originally requested page",
+        "Admin routes additionally check for admin role"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProtectedRoute.tsx",
+          "operation": "create",
+          "description": "Create protected route wrapper component that checks authentication state and redirects unauthenticated users. Uses authorization component to verify user authentication. Stores originally requested page for post-login redirect. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AdminRoute.tsx",
+          "operation": "create",
+          "description": "Create admin route wrapper component that checks both authentication and admin role, redirecting non-admin users to access denied screen. Uses authorization component's isCallerAdmin method. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire all pages into router with appropriate route protection. Wrap reader, manga details, bookmarks, and history routes with ProtectedRoute component. Wrap admin route with AdminRoute component. Configure routes for home page (/), manga details (/manga/:id), reader (/manga/:id/chapter/:chapterNumber), bookmarks (/bookmarks), history (/history), and admin panel (/admin). Include Layout component wrapping all routes."
+        }
+      ]
+    }
+  ]
+}

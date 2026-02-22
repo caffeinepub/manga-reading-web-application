@@ -1,0 +1,271 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-user-authentication-using-internet-identity-with-passkey-based-login-ensuring-users-can-sign-up-and-log-in-to-access-protected-features",
+      "featureTitle": "Implement user authentication using Internet Identity with passkey-based login, ensuring users can sign up and log in to access protected features",
+      "files": [
+        "frontend/src/components/LoginButton.tsx",
+        "frontend/src/components/UserProfileSetup.tsx",
+        "frontend/src/hooks/useGetCallerUserProfile.ts",
+        "frontend/src/hooks/useSaveCallerUserProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-home-page-displaying-all-manga-in-a-grid-layout-with-each-manga-card-showing-cover-image-title-truncated-description-and-a-read-now-button-that-navigates-to-the-manga-details-page",
+      "featureTitle": "Create a home page displaying all manga in a grid layout with each manga card showing cover image, title, truncated description, and a 'Read Now' button that navigates to the manga details page",
+      "files": [
+        "frontend/src/components/MangaCard.tsx",
+        "frontend/src/hooks/useGetMangaList.ts",
+        "frontend/src/pages/HomePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-manga-details-page-that-displays-manga-title-cover-image-full-description-and-a-list-of-all-chapters-with-chapter-numbers-and-titles-where-clicking-a-chapter-navigates-to-the-reader-page-for-that-chapter",
+      "featureTitle": "Create a manga details page that displays manga title, cover image, full description, and a list of all chapters with chapter numbers and titles, where clicking a chapter navigates to the reader page for that chapter",
+      "files": [
+        "frontend/src/components/ChapterList.tsx",
+        "frontend/src/hooks/useGetMangaById.ts",
+        "frontend/src/pages/MangaDetailsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-manga-reader-page-that-displays-chapter-images-in-a-vertical-scroll-layout-allows-users-to-navigate-between-chapters-shows-current-chapter-number-and-title-and-provides-a-back-button-to-return-to-manga-details",
+      "featureTitle": "Create a manga reader page that displays chapter images in a vertical scroll layout, allows users to navigate between chapters, shows current chapter number and title, and provides a back button to return to manga details",
+      "files": [
+        "frontend/src/hooks/useRecordReadingHistory.ts",
+        "frontend/src/pages/ReaderPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-dark-mode-toggle-that-switches-between-light-and-dark-themes-persisting-the-user-s-preference-in-localstorage-with-dark-mode-as-the-default-theme-using-background-color-0f0f0f",
+      "featureTitle": "Implement a dark mode toggle that switches between light and dark themes, persisting the user's preference in localStorage, with dark mode as the default theme using background color #0f0f0f",
+      "files": [
+        "frontend/src/components/ThemeToggle.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-an-admin-panel-page-accessible-only-to-admin-users-with-forms-to-add-new-manga-title-description-cover-image-url-add-chapters-to-existing-manga-select-manga-enter-chapter-number-title-and-array-of-image-urls-and-view-all-manga-with-edit-capabilities",
+      "featureTitle": "Create an admin panel page (accessible only to admin users) with forms to add new manga (title, description, cover image URL), add chapters to existing manga (select manga, enter chapter number, title, and array of image URLs), and view all manga with edit capabilities",
+      "files": [
+        "frontend/src/components/AccessDeniedScreen.tsx",
+        "frontend/src/components/AddChapterForm.tsx",
+        "frontend/src/components/AddMangaForm.tsx",
+        "frontend/src/hooks/useAddChapter.ts",
+        "frontend/src/hooks/useAddManga.ts",
+        "frontend/src/hooks/useIsCallerAdmin.ts",
+        "frontend/src/pages/AdminPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-search-feature-on-the-home-page-with-a-search-input-that-filters-manga-by-title-or-description-in-real-time-showing-results-as-the-user-types",
+      "featureTitle": "Implement a search feature on the home page with a search input that filters manga by title or description in real-time, showing results as the user types",
+      "files": [
+        "frontend/src/components/SearchBar.tsx",
+        "frontend/src/hooks/useSearchManga.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-pagination-controls-on-the-home-page-to-display-manga-in-pages-with-configurable-page-size-default-12-per-page-showing-page-numbers-previous-next-buttons-and-current-page-indicator",
+      "featureTitle": "Implement pagination controls on the home page to display manga in pages with configurable page size (default 12 per page), showing page numbers, previous/next buttons, and current page indicator",
+      "files": [
+        "frontend/src/components/Pagination.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-bookmark-functionality-with-a-bookmark-button-on-manga-details-pages-that-toggles-bookmark-status-and-create-a-bookmarks-page-showing-all-bookmarked-manga-for-the-authenticated-user",
+      "featureTitle": "Add bookmark functionality with a bookmark button on manga details pages that toggles bookmark status, and create a bookmarks page showing all bookmarked manga for the authenticated user",
+      "files": [
+        "frontend/src/components/BookmarkButton.tsx",
+        "frontend/src/hooks/useAddBookmark.ts",
+        "frontend/src/hooks/useGetBookmarks.ts",
+        "frontend/src/hooks/useRemoveBookmark.ts",
+        "frontend/src/pages/BookmarksPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-reading-history-page-that-displays-all-manga-the-user-has-read-with-the-most-recent-chapter-accessed-sorted-by-most-recent-read-first-with-links-to-continue-reading-from-the-last-accessed-chapter",
+      "featureTitle": "Create a reading history page that displays all manga the user has read with the most recent chapter accessed, sorted by most recent read first, with links to continue reading from the last accessed chapter",
+      "files": [
+        "frontend/src/components/HistoryCard.tsx",
+        "frontend/src/hooks/useGetReadingHistory.ts",
+        "frontend/src/pages/HistoryPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-modern-anime-inspired-theme-with-dark-background-0f0f0f-as-default-purple-or-red-accent-colors-smooth-animations-on-hover-and-transitions-and-ensure-full-mobile-responsiveness-across-all-pages",
+      "featureTitle": "Apply a modern anime-inspired theme with dark background (#0f0f0f as default), purple or red accent colors, smooth animations on hover and transitions, and ensure full mobile responsiveness across all pages",
+      "files": [
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-protected-routes-that-redirect-unauthenticated-users-to-the-login-page-when-attempting-to-access-manga-reader-bookmarks-history-or-admin-pages",
+      "featureTitle": "Implement protected routes that redirect unauthenticated users to the login page when attempting to access manga reader, bookmarks, history, or admin pages",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AdminRoute.tsx",
+        "frontend/src/components/ProtectedRoute.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-17"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

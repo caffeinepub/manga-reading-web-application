@@ -1,0 +1,375 @@
+{
+  "kind": "build_request",
+  "title": "Build manga reading platform with authentication, library, and reader",
+  "projectName": "Manga Reader",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement user authentication using Internet Identity with passkey-based login, ensuring users can sign up and log in to access protected features",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "JWT-based login & signup",
+          "Protected routes (only logged-in users can read manga)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can authenticate using Internet Identity",
+        "Unauthenticated users cannot access manga reading features",
+        "Authentication state persists across page refreshes",
+        "Logout functionality clears authentication state"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create backend data models in Motoko for User with fields: principal (identity), username, email, role (admin/user), bookmarks (array of manga IDs), readingHistory (array of manga ID + chapter number pairs), and createdAt timestamp",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "User Schema: username, email, password, createdAt",
+          "Role-based access (admin/user)",
+          "Bookmark feature",
+          "Reading history tracking"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User data persists across canister upgrades",
+        "User records are indexed by principal ID",
+        "Role field distinguishes between admin and regular users"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create backend data models in Motoko for Manga with fields: id, title, description, coverImage (URL), chapters (array of Chapter objects), and createdAt timestamp",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Manga Schema: title, description, coverImage, chapters (array)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Manga records are stored persistently",
+        "Each manga has a unique ID",
+        "Chapters are embedded within manga records"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create backend data model for Chapter within Manga with fields: chapterNumber, title, and images (array of image URLs)",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Chapter Schema: chapterNumber, title, images (array of image URLs)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Chapters are ordered by chapter number",
+        "Each chapter contains an array of image URLs for pages"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement backend methods: getMangaList (public, returns all manga with pagination support), getMangaById (public, returns full manga with all chapters), searchManga (public, filters by title/description), addManga (admin-only), addChapter (admin-only), and updateManga (admin-only)",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "GET /api/manga",
+          "GET /api/manga/:id",
+          "POST /api/manga (protected)",
+          "Admin features to add manga and chapters",
+          "Manga search feature",
+          "Pagination"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Public methods return manga data without authentication",
+        "Admin methods verify caller has admin role",
+        "Search filters manga by matching title or description text",
+        "Pagination returns configurable page size and supports page navigation"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement backend methods for user features: addBookmark (authenticated), removeBookmark (authenticated), getBookmarks (authenticated, returns user's bookmarked manga), recordReadingHistory (authenticated, tracks manga ID + chapter number), and getReadingHistory (authenticated)",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Bookmark feature",
+          "Reading history tracking"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only authenticated users can access these methods",
+        "Bookmarks are stored per user and persist",
+        "Reading history tracks most recent chapters read per manga",
+        "Users can retrieve their own bookmarks and history"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Create a home page displaying all manga in a grid layout with each manga card showing cover image, title, truncated description, and a 'Read Now' button that navigates to the manga details page",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Display manga list in grid layout",
+          "Each manga should have: Cover image, Title, Description, 'Read Now' button"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Grid layout is responsive (adjusts columns based on screen size)",
+        "Cover images load properly",
+        "Read Now button navigates to correct manga details page",
+        "Long descriptions are truncated with ellipsis"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Create a manga details page that displays manga title, cover image, full description, and a list of all chapters with chapter numbers and titles, where clicking a chapter navigates to the reader page for that chapter",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "MANGA READER PAGE",
+          "Display manga chapters",
+          "Click chapter → Open reader"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All chapter information is displayed clearly",
+        "Chapters are listed in order by chapter number",
+        "Clicking a chapter opens the reader for that specific chapter",
+        "Page shows bookmark and reading history status"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Create a manga reader page that displays chapter images in a vertical scroll layout, allows users to navigate between chapters, shows current chapter number and title, and provides a back button to return to manga details",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Vertical scroll reading layout",
+          "Display manga chapters",
+          "Responsive design"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Images load sequentially in vertical scroll",
+        "Reader is fully responsive on mobile and desktop",
+        "Navigation buttons allow moving to previous/next chapter",
+        "Current chapter information is clearly displayed",
+        "Reading progress is automatically recorded to history"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Implement a dark mode toggle that switches between light and dark themes, persisting the user's preference in localStorage, with dark mode as the default theme using background color #0f0f0f",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Dark mode toggle",
+          "Dark background (#0f0f0f)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Toggle button is accessible from all pages",
+        "Theme preference persists across sessions",
+        "Dark mode uses #0f0f0f background",
+        "All text remains readable in both modes"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Create an admin panel page (accessible only to admin users) with forms to add new manga (title, description, cover image URL), add chapters to existing manga (select manga, enter chapter number, title, and array of image URLs), and view all manga with edit capabilities",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Add new manga",
+          "Add chapters",
+          "Upload manga images (store image URLs for now)",
+          "Role-based access (admin/user)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin panel is only accessible to users with admin role",
+        "Forms validate required fields before submission",
+        "Successfully added manga/chapters appear immediately in the library",
+        "Non-admin users are redirected if they attempt to access admin routes"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Implement a search feature on the home page with a search input that filters manga by title or description in real-time, showing results as the user types",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Manga search feature"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Search input is prominently placed on home page",
+        "Results update as user types (debounced)",
+        "Search matches both title and description text",
+        "Clear search button resets to show all manga"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Implement pagination controls on the home page to display manga in pages with configurable page size (default 12 per page), showing page numbers, previous/next buttons, and current page indicator",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Pagination"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Pagination controls are intuitive and accessible",
+        "Page state is reflected in URL query parameters",
+        "Users can navigate between pages smoothly",
+        "Page size is configurable"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add bookmark functionality with a bookmark button on manga details pages that toggles bookmark status, and create a bookmarks page showing all bookmarked manga for the authenticated user",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Bookmark feature"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Bookmark button shows current bookmark state",
+        "Clicking bookmark button adds/removes bookmark",
+        "Bookmarks page displays all bookmarked manga",
+        "Bookmark state persists across sessions"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Create a reading history page that displays all manga the user has read with the most recent chapter accessed, sorted by most recent read first, with links to continue reading from the last accessed chapter",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Reading history tracking"
+        ]
+      },
+      "acceptanceCriteria": [
+        "History page shows manga title, cover, and last read chapter",
+        "List is sorted by most recently read",
+        "Continue reading button navigates to last accessed chapter",
+        "History updates automatically when user reads chapters"
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Apply a modern anime-inspired theme with dark background (#0f0f0f as default), purple or red accent colors, smooth animations on hover and transitions, and ensure full mobile responsiveness across all pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Modern anime theme",
+          "Dark background (#0f0f0f)",
+          "Accent color: Purple or Red",
+          "Smooth animations",
+          "Mobile responsive"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Color scheme uses #0f0f0f background with purple or red accents",
+        "Hover effects and transitions are smooth and subtle",
+        "All pages are fully responsive on mobile devices",
+        "Typography and spacing follow modern design principles"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Implement protected routes that redirect unauthenticated users to the login page when attempting to access manga reader, bookmarks, history, or admin pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Protected routes (only logged-in users can read manga)",
+          "Protected route wrapper"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users cannot access protected pages",
+        "Users are redirected to appropriate login flow",
+        "After authentication, users are redirected to originally requested page",
+        "Admin routes additionally check for admin role"
+      ]
+    }
+  ],
+  "constraints": [
+    "Use Motoko for backend instead of Node.js/Express/MongoDB",
+    "Use Internet Identity for authentication instead of JWT tokens",
+    "Cannot integrate Cloudinary; use direct image URLs or alternative Internet Computer storage solutions",
+    "All backend logic must exist in the single main actor file",
+    "Cannot modify immutable frontend paths: useInternetIdentity hooks, useActor, main.tsx, and ui components"
+  ],
+  "nonGoals": [
+    "Traditional session/refresh token management (Internet Identity handles authentication differently)",
+    "Cloudinary integration for image uploads",
+    "MongoDB database setup",
+    "Node.js/Express backend implementation",
+    "Email/password authentication with bcrypt"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Placeholder manga cover image with anime aesthetic, purple gradient background (manga-cover-placeholder.dim_400x600.png)",
+      "Default user avatar with anime style (user-avatar-default.dim_128x128.png)",
+      "Bookmark icon in purple or red accent color (bookmark-icon.dim_64x64.png)",
+      "Reading history icon with anime aesthetic (history-icon.dim_64x64.png)"
+    ],
+    "edits": []
+  }
+}
